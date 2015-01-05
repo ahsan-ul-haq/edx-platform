@@ -1,6 +1,93 @@
 // lms - elements - controls
 // ====================
 
+// button - basic LMS button (temporarily meant to replace bourbon button() mixin)
+%button {
+  @include linear-gradient($button-color, shade($button-color, 15%));
+  @include line-height(1);
+  display: inline-block;
+  border: ($baseline/20) solid shade($button-color, 35%);
+  border-radius: $base-border-radius;
+  box-shadow: inset 0 ($baseline/20) 0 0 $white-t1;
+  padding: 1.25rem 1.5rem;
+  background-color: $button-color;
+  color: $button-text-color;
+  font-size: inherit;
+  font-weight: $font-semibold;
+  text-decoration: none;
+  text-shadow: 0 ($baseline/20) 0 $black-t1;
+
+  &:hover, &:focus {
+    @include linear-gradient($focus-button-color, shade($focus-button-color, 30%)); // deviation from current styling
+    background-color: $focus-button-color;
+    color: $focus-button-text-color;
+  }
+
+  &:disabled {
+    @extend %ui-disabled;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+%button-base {
+  @extend %button;
+  @include linear-gradient($button-base-color, shade($button-base-color, 15%));
+  border-color: shade($button-base-color, 35%);
+  background-color: $button-base-color;
+  color: $button-base-text-color;
+
+  &:hover, &:focus {
+    @include linear-gradient($focus-button-base-color, shade($focus-button-base-color, 30%));
+    background-color: $focus-button-base-color;
+    color: $focus-button-base-text-color;
+  }
+}
+
+%button-primary {
+  @extend %button;
+  @include linear-gradient($button-primary-color, shade($button-primary-color, 15%));
+  border-color: shade($button-primary-color, 35%);
+  background-color: $button-primary-color;
+  color: $button-primary-text-color;
+
+  &:hover, &:focus {
+    @include linear-gradient($focus-button-primary-color, shade($focus-button-primary-color, 30%));
+    background-color: $focus-button-primary-color;
+    color: $focus-button-primary-text-color;
+  }
+}
+
+%button-secondary {
+  @extend %button;
+  @include linear-gradient($button-secondary-color, shade($button-secondary-color, 15%));
+  border-color: shade($button-secondary-color, 35%);
+  background-color: $button-secondary-color;
+  color: $button-secondary-text-color;
+
+  &:hover, &:focus {
+    @include linear-gradient($focus-button-secondary-color, shade($focus-button-secondary-color, 30%));
+    background-color: $focus-button-secondary-color;
+    color: $focus-button-secondary-text-color;
+  }
+}
+
+%button-tertiary {
+  @extend %button;
+  @include linear-gradient($button-tertiary-color, shade($button-tertiary-color, 15%));
+  border-color: shade($button-tertiary-color, 35%);
+  background-color: $button-tertiary-color;
+  color: $button-tertiary-text-color;
+
+  &:hover, &:focus {
+    @include linear-gradient($focus-button-tertiary-color, shade($focus-button-tertiary-color, 30%));
+    background-color: $focus-button-tertiary-color;
+    color: $focus-button-tertiary-text-color;
+  }
+}
+
+// ====================
+
 %btn {
   @include box-sizing(border-box);
   @include transition(color $tmg-f2 ease-in-out, background $tmg-f2 ease-in-out, box-shadow $tmg-f2 ease-in-out);

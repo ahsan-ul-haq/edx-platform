@@ -455,7 +455,7 @@
         }
 
         .enter-course {
-          @include button(simple, $button-color);
+          @extend %button;
           @include box-sizing(border-box);
           border-radius: 3px;
           display: block;
@@ -467,7 +467,7 @@
           margin-top: 16px;
 
           &.archived {
-            @include button(simple, $button-archive-color);
+            @extend %button-base;
             font: normal 15px/1.6rem $sans-serif;
             padding: 6px 32px 7px;
 
