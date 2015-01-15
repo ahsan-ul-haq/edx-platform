@@ -6,7 +6,9 @@ import unittest
 from tempfile import mkdtemp
 import itertools
 from shutil import rmtree
-
+from bson.son import SON
+from bson.code import Code
+import datetime
 import ddt
 #from nose.plugins.attrib import attr
 
@@ -34,7 +36,7 @@ class CodeBlockTimer(object):
         pass
 
 # Number of assets saved in the modulestore per test run.
-ASSET_AMOUNT_PER_TEST = (1, 10, 100, 1000, 10000)
+ASSET_AMOUNT_PER_TEST = (0, 1, 10, 100, 1000, 10000)
 
 # Use only this course in asset metadata performance testing.
 COURSE_NAME = 'manual-testing-complete'
@@ -140,3 +142,60 @@ class CrossStoreXMLRoundtrip(unittest.TestCase):
                                     create_course_if_not_present=True,
                                     raise_on_failure=True,
                                 )
+
+@ddt.ddt
+# Eventually, exclude this attribute from regular unittests while running *only* tests
+# with this attribute during regular performance tests.
+# @attr("perf_test")
+class TestModulestoreAssetSize(unittest.TestCase):
+    """
+    This class exists to measure the size of asset metadata in ifferent modulestore
+    classes with different amount of asset metadata.
+    """
+
+    # Use this attribute to skip this test on regular unittest CI runs.
+    perf_test = True
+
+    test_run_time = datetime.datetime.now()
+
+    @ddt.data(*itertools.product(
+        MODULESTORE_SETUPS,
+        ASSET_AMOUNT_PER_TEST
+    ))
+    @ddt.unpack
+    def test_asset_sizes(self, source_ms, num_assets):
+        """
+        Generate timings for different amounts of asset metadata and different modulestores.
+        """
+        # First, make the fake asset metadata.
+        make_asset_xml(num_assets, ASSET_XML_PATH)
+        validate_xml(ASSET_XSD_PATH, ASSET_XML_PATH)
+
+        # Construct the contentstore for storing the first import
+        with MongoContentstoreBuilder().build() as source_content:
+            # Construct the modulestore for storing the first import (using the previously created contentstore)
+            with source_ms.build(source_content) as source_store:
+                source_course_key = source_store.make_course_key('a', 'course', 'course')
+
+                import_from_xml(
+                    source_store,
+                    'test_user',
+                    TEST_DATA_ROOT,
+                    course_dirs=TEST_COURSE,
+                    static_content_store=source_content,
+                    target_course_id=source_course_key,
+                    create_course_if_not_present=True,
+                    raise_on_failure=True,
+                )
+
+                reducer = Code("""
+                    function(obj, prev) { prev.size = Object.bsonsize(obj); }
+                """)
+
+                results = source_ms.asset_collection(source_course_key).group(key={}, condition={}, initial={"size": 0}, reduce=reducer)
+                result_str = "{} - Store: {:<15} - Num Assets: {:>6} - Result: {}\n".format(
+                    self.test_run_time, SHORT_NAME_MAP[source_ms], num_assets, str(results)
+                )
+                with open("bson_sizes.txt", "a") as f:
+                    f.write(result_str)
+
