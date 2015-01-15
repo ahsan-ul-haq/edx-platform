@@ -51,7 +51,7 @@ function () {
     //     make the created DOM elements available via the 'state' object. Much easier to work this
     //     way - you don't have to do repeated jQuery element selects.
     function _renderElements(state) {
-        state.videoQualityControl.el = state.el.find('a.quality-control');
+        state.videoQualityControl.el = state.el.find('.quality');
 
         state.videoQualityControl.el.show();
         state.videoQualityControl.quality = 'large';
@@ -117,15 +117,15 @@ function () {
         this.videoQualityControl.quality = value;
 
         if (_.contains(this.config.availableHDQualities, value)) {
-            controlStateStr = gettext('HD on');
+            controlStateStr = gettext('HD');
             this.videoQualityControl.el
-                                    .addClass('active')
+                                    .addClass('is-active')
                                     .attr('title', controlStateStr)
                                     .text(controlStateStr);
         } else {
-            controlStateStr = gettext('HD off');
+            controlStateStr = gettext('HD');
             this.videoQualityControl.el
-                                    .removeClass('active')
+                                    .removeClass('is-active')
                                     .attr('title', controlStateStr)
                                     .text(controlStateStr);
 

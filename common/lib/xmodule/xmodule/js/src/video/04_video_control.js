@@ -58,10 +58,10 @@ function () {
         // state.videoControl.el.append(el);
 
         state.videoControl.sliderEl            = state.videoControl.el.find('.slider');
-        state.videoControl.playPauseEl         = state.videoControl.el.find('.video_control');
+        state.videoControl.playPauseEl         = state.videoControl.el.find('.play-pause');
         state.videoControl.playPlaceholder     = state.el.find('.btn-play');
-        state.videoControl.secondaryControlsEl = state.videoControl.el.find('.secondary-controls');
-        state.videoControl.fullScreenEl        = state.videoControl.el.find('.add-fullscreen');
+        state.videoControl.secondaryControlsEl = state.videoControl.el.find('.controls');
+        state.videoControl.fullScreenEl        = state.videoControl.el.find('.size');
         state.videoControl.vidTimeEl           = state.videoControl.el.find('.vidtime');
 
         state.videoControl.fullScreenState = false;
@@ -226,7 +226,10 @@ function () {
         this.videoControl.playPauseEl
             .removeClass('play')
             .addClass('pause')
-            .attr('title', gettext('Pause'));
+            .attr('title', gettext('Pause'))
+            .find('.fa')
+                .removeClass('fa-play')
+                .addClass('fa-pause');
 
         if (/iPad|Android/i.test(this.isTouch[0]) && this.videoType === 'html5') {
             this.videoControl.hidePlayPlaceholder();
@@ -238,7 +241,10 @@ function () {
         this.videoControl.playPauseEl
             .removeClass('pause')
             .addClass('play')
-            .attr('title', gettext('Play'));
+            .attr('title', gettext('Play'))
+            .find('.fa')
+                .removeClass('fa-pause')
+                .addClass('fa-play');
 
         if (/iPad|Android/i.test(this.isTouch[0]) && this.videoType === 'html5') {
             this.videoControl.showPlayPlaceholder();
@@ -268,6 +274,10 @@ function () {
             this.videoControl.fullScreenState = this.isFullScreen = false;
             fullScreenClassNameEl.removeClass('video-fullscreen');
             text = gettext('Fill browser');
+            this.$(videoControlEl)
+                .find('.fa')
+                    .removeClass('fa-expand')
+                    .addClass('fa-collapse');
             win.scrollTop(this.scrollPos);
         } else {
             this.scrollPos = win.scrollTop();
@@ -275,11 +285,16 @@ function () {
             this.videoControl.fullScreenState = this.isFullScreen = true;
             fullScreenClassNameEl.addClass('video-fullscreen');
             text = gettext('Exit full browser');
+            this.$(videoControlEl)
+                .find('.fa')
+                    .removeClass('fa-collapse')
+                    .addClass('fa-expand');
         }
 
         this.videoControl.fullScreenEl
             .attr('title', text)
-            .text(text);
+            .find('.sr')
+                .text(text);
 
         this.el.trigger('fullscreen', [this.isFullScreen]);
     }

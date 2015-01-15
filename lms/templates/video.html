@@ -64,19 +64,25 @@
         <div class="video-player-post"></div>
 
         <section class="video-controls is-hidden">
-          <div class="slider" title="${_('Video position')}"></div>
+          <div class="wrapper-slider">
+            <div class="slider" title="${_('Video position')}"></div>
+          </div>
           <div class="controls">
-            <button class="play-pause video_control" title="${_('Play')}"><i class="icon fa fa-play" aria-hidden="true"></i><span class="sr">${_('Play')}</span></button>
+            <button class="play-pause video_control" title="${_('Play')}"><i class="icon fa fa-play" aria-hidden="true"></i> <span class="sr">${_('Play')}</span></button>
             <div class="time vidtime">0:00 / 0:00</div>
-            <button class="speed menu-container" title="${_('Speed')}"><i class="icon fa fa-caret-up" aria-hidden="true"></i><span class="sr">${_('Playback speed')}</span><span class="value"></span></button>
-            <ul class="video-speeds menu" role="menu"></ul>
-            <button class="volume menu-container" title="${_('Volume')}"><i class="icon fa fa-volume-up" aria-hidden="true"></i><span class="sr">${_('Volume')}</span></button>
-            <div role="presentation" class="volume-slider-container">
-              <div class="volume-slider"></div>
+            <div class="speeds menu-container">
+              <button class="speed speed-button" title="${_('Speed')}"><i class="icon fa fa-caret-right" aria-hidden="true" aria-haspopup="true" aria-controls="speed_menu"></i> ${_('Speed')}: <span class="value">1.0x</span></button>
+              <ul id="speed_menu" class="video-speeds menu is-hidden" role="menu"></ul>
             </div>
-            <button class="size add-fullscreen" title="${_('Toggle fullscreen')}"><i class="icon fa fa-expand" aria-hidden="true"></i><span class="sr">${_('Toggle fullscreen')}</span></button>
-            <button class="quality quality-control" title="${_('Toggle quality')}"><span class="button-text">HD</span><span class="sr">${_('Toggle quality')}</span></button>
-            <button class="captions hide-subtitles" title="${_('Toggle captions')}"><i class="icon fa fa-cc" aria-hidden="true"></i><span class="sr">${_('Toggle captions')}</span></button>
+            <div class="volume menu-container">
+              <button class="volume volume-button" title="${_('Volume')}"><i class="icon fa fa-volume-up" aria-hidden="true" aria-haspopup="true" aria-controls="volume_menu"></i> <span class="sr">${_('Volume')}</span></button>
+              <div id="volume_menu" class="volume-slider-container menu" role="presentation">
+                <div class="volume-slider"></div>
+              </div>
+            </div>
+            <button class="quality quality-control is-active" title="${_('Toggle quality')}" aria-pressed="false">HD<span class="sr">${_('Toggle quality')}</span></button>
+            <button class="captions hide-subtitles is-active" title="${_('Toggle captions')}" aria-pressed="true"><i class="icon fa fa-cc" aria-hidden="true"></i><span class="sr">${_('Toggle captions')}</span></button>
+            <button class="size add-fullscreen" title="${_('Toggle fullscreen')}" aria-pressed="false"><i class="icon fa fa-expand" aria-hidden="true"></i><span class="sr">${_('Toggle fullscreen')}</span></button>
           </div>
         </section>
         <a class="nav-skip sr" id="before-transcript_${id}" href="#after-transcript_${id}">${_('Skip to end of transcript.')}</a>

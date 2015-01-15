@@ -30,7 +30,7 @@ function (Iterator) {
 
             this.el = state.el.find('.speeds');
             this.speedsContainer = this.el.find('.video-speeds');
-            this.speedButton = this.el.find('.speed-button');
+            this.speedButton = this.el.find('.speed');
 
             if (!this.isPlaybackRatesSupported(state)) {
                 this.el.remove();
@@ -133,7 +133,7 @@ function (Iterator) {
             // element to have clicks close the menu when they happen
             // outside of it.
             if (bindEvent) {
-                $(window).on('click.speedMenu', this.clickMenuHandler.bind(this));
+                $(window).on('click.speed', this.clickMenuHandler.bind(this));
             }
 
             this.el.addClass('is-opened');
@@ -147,7 +147,7 @@ function (Iterator) {
         closeMenu: function (unBindEvent) {
             // Remove the previously added clickHandler from window element.
             if (unBindEvent) {
-                $(window).off('click.speedMenu');
+                $(window).off('click.speed');
             }
 
             this.el.removeClass('is-opened');
@@ -313,7 +313,6 @@ function (Iterator) {
                     this.closeMenu(true);
                     this.speedButton.focus();
                     this.setSpeed(this.state.speedToString(speed));
-
                     return false;
             }
 

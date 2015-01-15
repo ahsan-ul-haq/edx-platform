@@ -41,9 +41,9 @@ function (Sjson, AsyncProcess) {
                 languages = this.state.config.transcriptLanguages;
 
             this.loaded = false;
-            this.subtitlesEl = state.el.find('ol.subtitles');
+            this.subtitlesEl = state.el.find('.subtitles');
             this.container = state.el.find('.lang');
-            this.hideSubtitlesEl = state.el.find('a.hide-subtitles');
+            this.hideSubtitlesEl = state.el.find('.captions');
 
             if (_.keys(languages).length) {
                 this.renderLanguageMenu(languages);
@@ -779,18 +779,21 @@ function (Sjson, AsyncProcess) {
                 type = 'hide_transcript';
                 state.captionsHidden = true;
                 state.el.addClass('closed');
+                state.el.removeClass('is-active');
                 text = gettext('Turn on captions');
             } else {
                 type = 'show_transcript';
                 state.captionsHidden = false;
                 state.el.removeClass('closed');
+                state.el.addClass('is-active');
                 this.scrollCaption();
                 text = gettext('Turn off captions');
             }
 
             hideSubtitlesEl
                 .attr('title', text)
-                .text(gettext(text));
+                .find('.sr')
+                    .text(gettext(text));
 
             if (state.videoPlayer) {
                 state.videoPlayer.log(type, {
